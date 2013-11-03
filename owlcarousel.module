@@ -1,0 +1,189 @@
+<?php
+
+/**
+ * @file
+ * owlcarousel.module
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function owlcarousel_theme() {
+  return array(
+    'owlcarousel' => array(
+      'variables' => array('items' => array(), 'settings' => array()),
+      'template' => 'theme/owlcarousel',
+      'file' => 'theme/owlcarousel.theme.inc',
+    ),
+    'owlcarousel_list' => array(
+      'variables' => array('items' => array(), 'settings' => array()),
+      'file' => 'theme/owlcarousel.theme.inc',
+    ),
+    'owlcarousel_list_item' => array(
+      'variables' => array('item' => array(), 'settings' => array()),
+      'file' => 'theme/owlcarousel.theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function owlcarousel_permission() {
+  return array(
+    'administer owlcarousel settings' => array(
+      'title' => t('Administer Owl Carousel settings'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_library().
+ */
+function owlcarousel_library() {
+  $library = libraries_get_path('owl-carousel');
+
+  $libraries['owlcarousel'] = array(
+    'title' => 'Owl Carousel',
+    'website' => 'http://owlgraphic.com/owlcarousel',
+    'js' => array(
+      $library . '/owl.carousel.min.js' => array(
+        'scope' => 'footer',
+      ),
+    ),
+    'css' => array(
+      $library . '/owl.carousel.css' => array(
+        'type' => 'file',
+        'media' => 'screen',
+      ),
+      $library . '/owl.theme.css' => array(
+        'type' => 'file',
+        'media' => 'screen',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Loads carousel instance settings.
+ */
+function owlcarousel_initiate_instance($instance) {
+  // Unless you're doing some weird jazz we simply
+  // need jQuery 1.7+.
+  $version = variable_get('jquery_update_jquery_version', FALSE);
+  if (!$version || $version == '1.5') {
+    drupal_set_message(t('The installed jQuery version is not supported by Owl Carousel.'), 'error', FALSE);
+  }
+
+  // Include library.
+  drupal_add_library('owlcarousel', 'owlcarousel');
+
+  // Load carousel settings from the $instance id.
+  $settings = _owlcarousel_return_carousel_instance_settings($instance);
+  drupal_add_js(array('owlcarousel' => array($instance => $settings)), 'setting');
+
+  // Load settings handler.
+  drupal_add_js(drupal_get_path('module', 'owlcarousel') . '/includes/js/owlcarousel.settings.js', array('scope' => 'footer', 'type' => 'file'));
+}
+
+/**
+ * Helper function, return Owl Carousel settings array or default.
+ */
+function _owlcarousel_return_carousel_instance_settings($id = NULL) {
+  $settings = array(
+    'items' => 5,
+    'itemsDesktop' => array(1199, 4),
+    'itemsDesktopSmall' => array(979, 3),
+    'itemsTablet' => array(768, 2),
+    'itemsTabletSmall' => FALSE,
+    'itemsMobile' => array(479, 1),
+    'singleItem' => FALSE,
+    'itemsScaleUp' => FALSE,
+    'slideSpeed' => 200,
+    'paginationSpeed' => 800,
+    'rewindSpeed' => 1000,
+    'autoPlay' => FALSE,
+    'stopOnHover' => FALSE,
+    'navigation' => FALSE,
+    'navigationText' => array('prev', 'next'),
+    'rewindNav' => TRUE,
+    'scrollPerPage' => FALSE,
+    'pagination' => TRUE,
+    'paginationNumbers' => FALSE,
+    'responsive' => TRUE,
+    'responsiveRefreshRate' => 200,
+    'responsiveBaseWidth' => 'window',
+    'baseClass' => 'owl-carousel',
+    'theme' => 'owl-theme',
+    'lazyLoad' => FALSE,
+    'lazyFollow' => TRUE,
+    'lazyEffect' => 'fade',
+    'autoHeight' => FALSE,
+    'jsonPath' => FALSE,
+    'jsonSuccess' => FALSE,
+    'dragBeforeAnimFinish' => TRUE,
+    'mouseDrag' => TRUE,
+    'touchDrag' => TRUE,
+    'addClassActive' => FALSE,
+    'transitionStyle' => FALSE,
+  );
+
+  if ($id) {
+    $settings = _owlcarousel_typecast(variable_get(str_replace('-', '_', $id)));
+  }
+
+  return $settings;
+}
+
+/**
+ * Helper function, type juggling.
+ *
+ * Shamelessly stolen from FlexSlider.
+ * https://drupal.org/project/flexslider
+ */
+function _owlcarousel_typecast($options) {
+  if (isset($options) && !empty($options)) {
+    foreach ($options as $key => $value) {
+      switch ($key) {
+        case 'responsiveBaseWidth':
+        case 'baseClass':
+        case 'theme':
+        case 'transitionStyle':
+          $options[$key] = (string)$value;
+          break;
+        case 'items':
+        case 'slideSpeed':
+        case 'paginationSpeed':
+        case 'rewindSpeed':
+        case 'responsiveRefreshRate':
+          $options[$key] = (int)$value;
+          break;
+        case 'singleItem':
+        case 'itemsScaleUp':
+        case 'autoPlay':
+        case 'stopOnHover':
+        case 'navigation':
+        case 'rewindNav':
+        case 'scrollPerPage':
+        case 'pagination':
+        case 'paginationNumbers':
+        case 'responsive':
+        case 'lazyLoad':
+        case 'lazyFollow':
+        case 'autoHeight':
+        case 'dragBeforeAnimFinish':
+        case 'mouseDrag':
+        case 'touchDrag':
+        case 'addClassActive':
+        case 'jsonPath':
+        case 'jsonSuccess':
+          $options[$key] = (boolean)$value;
+          break;
+      }
+    }
+  }
+
+  return $options;
+}

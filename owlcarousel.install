@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * owlcarousel.install
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function owlcarousel_uninstall() {
+  $query = 'SELECT name FROM {variable} WHERE name LIKE :name';
+  $results = db_query($query, array(':name' => db_like('owl_carousel_') . '%'))->fetchAll();
+
+  foreach ($results as $result) {
+    // Clean up stored variables.
+    variable_del($result->name);
+  }
+}
