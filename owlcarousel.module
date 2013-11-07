@@ -46,6 +46,7 @@ function owlcarousel_library() {
   $libraries['owlcarousel'] = array(
     'title' => 'Owl Carousel',
     'website' => 'http://owlgraphic.com/owlcarousel',
+    'version' => array(),
     'js' => array(
       $library . '/owl.carousel.min.js' => array(
         'scope' => 'footer',
