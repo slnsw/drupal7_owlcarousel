@@ -37,8 +37,9 @@ function theme_owlcarousel_list_item(&$vars) {
  * Template process carousel theme.
  */
 function template_process_owlcarousel(&$vars) {
+  $instance_id = $vars['settings']['instance'];
   $owlcarousel_id = $vars['settings']['attributes']['id']['default'];
   $vars['settings']['attributes']['id'] = $owlcarousel_id;
 
-  owlcarousel_initiate_instance($owlcarousel_id);
+  owlcarousel_initiate_instance($instance_id, $owlcarousel_id);
 }

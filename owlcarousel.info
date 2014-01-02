@@ -3,4 +3,8 @@ description = "Provides Owl Carousel integration into Drupal."
 core = 7.x
 package = Owl Carousel
 
+dependencies[] = variable
+dependencies[] = libraries
 dependencies[] = jquery_update
+
+configure = admin/config/user-interface/owlcarousel

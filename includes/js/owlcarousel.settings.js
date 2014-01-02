@@ -6,7 +6,7 @@
 (function($) {
   Drupal.behaviors.owlcarousel = {
     attach: function(context, settings) {
-      // Attach settings.
+      // Attach instance settings.
       for (var carousel in settings.owlcarousel) {
         $("#" + carousel).owlCarousel(settings.owlcarousel[carousel]);
       }

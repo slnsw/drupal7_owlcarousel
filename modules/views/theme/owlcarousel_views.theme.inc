@@ -23,9 +23,6 @@ function template_process_owlcarousel_views(&$vars) {
       $items[] = $item;
     }
 
-    // @todo, add items per slide.
-    // $vars['items_per_slide'] = $items_per_slide;
-
     // Add the slide items.
     $vars['items'] = $items;
 
