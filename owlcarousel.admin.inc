@@ -72,7 +72,7 @@ function owlcarousel_settings_form() {
     '#type' => 'container',
     '#title' => t('Add new instance settings group'),
   );
-  // @todo, add validation.
+  // @todo, validation.
   $build['groups']['owlcarousel_settings_add']['actions']['add'] = array(
     '#type' => 'submit',
     '#value' => t('Add group'),
@@ -130,4 +130,39 @@ function owlcarousel_variable_settings_form_submit($form, $form_state) {
 function owlcarousel_instance_settings_form($instance) {
   module_load_include('form.inc', 'variable_realm');
   return drupal_get_form('variable_module_form', 'owlcarousel', $instance);
+}
+
+/**
+ * Additional variable settings form submit handler.
+ */
+function owlcarousel_variable_settings_submit($form, $form_state) {
+  // Clear settings cache.
+  $instance = str_replace('-', '_', $form_state['build_info']['args'][1]);
+  cache_clear_all('owlcarousel_cache_' . $instance . '_settings', 'cache', TRUE); 
+}
+
+/** 
+ * Menu callback, delete Owl Carousel instance settings.
+ */
+function owlcarousel_delete_instance_settings($id = NULL, $js) {
+  $message = t('Settings group @id could not be found.', array('@id' => $id));
+
+  if ($id) {
+    variable_del($id);
+    $message = t('Settings group @id has been deleted.', array('@id' => $id));
+
+    if ($js == 'ajax') {
+      $message = drupal_set_message($message, 'status');
+
+      $commands = array();
+      $commands[] = ajax_command_prepend('#page', theme('status_messages', $message));
+      $page = array('#type' => 'ajax', '#commands' => $commands);
+      ajax_deliver($page);
+      exit;
+    }
+  }
+
+  drupal_set_message($message, 'status');
+  // Return user to settings overview.
+  drupal_goto('admin/config/user-interface/owlcarousel');
 }

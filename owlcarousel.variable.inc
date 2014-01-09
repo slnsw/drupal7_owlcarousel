@@ -4,6 +4,40 @@
  * @file
  * owlcarousel.variable.inc
  */
+ 
+/**
+ * Implements hook_variable_type_info().
+ */
+function owlcarousel_variable_type_info() {
+  $type['instance_id'] = array(
+    'title' => t('Instance ID'),
+    'options callback' => 'owlcarousel_instance_callback_list',
+    'type' => 'select',
+  );
+  $type['width_items'] = array(
+    'title' => t('Browser Items'),
+    'multiple' => array('width' => t('Width'), 'items' => t('Items')),
+    'build callback' => 'owlcarousel_variable_build_browser_width',
+    'localize' => TRUE,
+    'type' => 'multiple',
+  );
+
+  return $type;
+}
+ 
+/**
+ * Implements hook_variable_group_info().
+ */
+function owlcarousel_variable_group_info() {
+  $groups['owlcarousel'] = array(
+    'title' => t('Owl Carousel'),
+    'description' => t('Define instance settings for each owl carousel.'),
+    'access' => 'administer site configuration',
+    'path' => array('admin/config/user-interface/owlcarousel'),
+  );
+
+  return $groups;
+}
 
 /**
  * Implements hook_variable_info().
@@ -19,53 +53,68 @@ function owlcarousel_variable_info($options) {
     ),
     'group' => 'owlcarousel',
   );
-  $variable['owlcarousel_items_desktop_[instance_id]'] = array(
+  $variable['owlcarousel_items_desktop_[instance_id]_[itemwidth_part]'] = array(
     'type' => 'multiple',
     'title' => t('Items Desktop', array(), $options),
     'description' => t('This allows you to preset the number of slides visible with a particular browser width.', array(), $options),
     'repeat' => array(
-      'type' => 'string',
-      'default' => t('1199,4', array(), $options),
+      'type' => 'width_items',
+      'default' => array(
+        'width' => t(1199, array(), $options),
+        'items' => t(4, array(), $options),
+      ),
     ),
     'group' => 'owlcarousel',
   );
-  $variable['owlcarousel_items_desktop_small_[instance_id]'] = array(
+  $variable['owlcarousel_items_desktop_small_[instance_id]_[itemwidth_part]'] = array(
     'type' => 'multiple',
     'title' => t('Items Desktop Small', array(), $options),
     'description' => t('This allows you to preset the number of slides visible with a particular browser width.', array(), $options),
     'repeat' => array(
-      'type' => 'string',
-      'default' => t('979,3', array(), $options),
+      'type' => 'width_items',
+      'default' => array(
+        'width' => t(979, array(), $options),
+        'items' => t(3, array(), $options),
+      ),
     ),
     'group' => 'owlcarousel',
   );
-  $variable['owlcarousel_items_tablet_[instance_id]'] = array(
+  $variable['owlcarousel_items_tablet_[instance_id]_[itemwidth_part]'] = array(
     'type' => 'multiple',
     'title' => t('Items Desktop Tablet', array(), $options),
     'description' => t('This allows you to preset the number of slides visible with a particular browser width.', array(), $options),
     'repeat' => array(
-      'type' => 'string',
-      'default' => t('768,2', array(), $options),
+      'type' => 'width_items',
+      'default' => array(
+        'width' => t(768, array(), $options),
+        'items' => t(2, array(), $options),
+      ),
     ),
     'group' => 'owlcarousel',
   );
-  $variable['owlcarousel_items_tablet_small_[instance_id]'] = array(
+  $variable['owlcarousel_items_tablet_small_[instance_id]_[itemwidth_part]'] = array(
     'type' => 'multiple',
     'title' => t('Items Desktop Tablet Small', array(), $options),
     'description' => t('This allows you to preset the number of slides visible with a particular browser width.', array(), $options),
     'repeat' => array(
-      'type' => 'string',
-      'default' => t(FALSE, array(), $options),
+      'type' => 'width_items',
+      'default' => array(
+        'width' => t(0, array(), $options),
+        'items' => t(0, array(), $options),
+      ),
     ),
     'group' => 'owlcarousel',
   );
-  $variable['owlcarousel_items_mobile_[instance_id]'] = array(
+  $variable['owlcarousel_items_mobile_[instance_id]_[itemwidth_part]'] = array(
     'type' => 'multiple',
     'title' => t('Items Desktop Mobile', array(), $options),
     'description' => t('This allows you to preset the number of slides visible with a particular browser width.', array(), $options),
     'repeat' => array(
-      'type' => 'string',
-      'default' => t('479,1', array(), $options),
+      'type' => 'width_items',
+      'default' => array(
+        'width' => t(479, array(), $options),
+        'items' => t(1, array(), $options),
+      ),
     ),
     'group' => 'owlcarousel',
   );
@@ -149,8 +198,16 @@ function owlcarousel_variable_info($options) {
     ),
     'group' => 'owlcarousel',
   );
-  // @todo, add callback to handle array values.
-  // Array string.
+  $variable['owlcarousel_navigation_text_[instance_id]'] = array(
+    'type' => 'multiple',
+    'title' => t('Navigation Text', array(), $options),
+    'description' => t('You can cusomize your own text for navigation.', array(), $options),
+    'repeat' => array(
+      'type' => 'array',
+      'default' => array('prev', 'next'),
+    ),
+    'group' => 'owlcarousel',
+  );
   $variable['owlcarousel_rewind_nav_[instance_id]'] = array(
     'type' => 'multiple',
     'title' => t('Rewind Nav', array(), $options),
@@ -356,15 +413,23 @@ function owlcarousel_variable_info($options) {
 }
 
 /**
- * Implements hook_variable_group_info().
+ * Variable build callback for browser/items.
  */
-function owlcarousel_variable_group_info() {
-  $groups['owlcarousel'] = array(
-    'title' => t('Owl Carousel'),
-    'description' => t('Define instance settings for each owl carousel.'),
-    'access' => 'administer site configuration',
-    'path' => array('admin/config/user-interface/owlcarousel'),
-  );
+function owlcarousel_variable_build_browser_width($variable, $options = array()) {
+  $index = str_replace('[instance_id]', $variable['index'], $variable['parent']);
+  $name = str_replace('[itemwidth_part]', '', $index);
 
-  return $groups;
+  foreach ($variable['multiple'] as $key => $child) {
+    $repeat_name = $name . $key;
+
+    $variable['name'] = $repeat_name;
+    $variable['children'][$repeat_name]['title'] = $child;
+    $variable['children'][$repeat_name]['index'] = $key;
+    $variable['children'][$repeat_name]['type'] = 'number';
+    $variable['children'][$repeat_name]['default'] = $variable['default'][$key];
+
+    $variable = variable_build_multiple($variable, $options);
+  }
+
+  return $variable;
 }
