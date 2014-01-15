@@ -121,9 +121,12 @@ function owlcarousel_initiate_instance($instance, $carousel) {
 
   // Load carousel settings from the instance id.
   $settings = _owlcarousel_return_carousel_instance_settings($instance);
-  drupal_add_js(array('owlcarousel' => array($carousel => $settings)), 'setting');
 
-  // Include settings.
+  // Provide alter for instance settings.
+  drupal_alter('owlcarousel_settings', $settings, $instance);
+
+  // Include instance settings.
+  drupal_add_js(array('owlcarousel' => array($carousel => $settings)), 'setting');
   drupal_add_js(drupal_get_path('module', 'owlcarousel') . '/includes/js/owlcarousel.settings.js', array('scope' => 'footer', 'type' => 'file'));
 }
 
