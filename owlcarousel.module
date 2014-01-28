@@ -101,6 +101,10 @@ function owlcarousel_library() {
         'type' => 'file',
         'media' => 'screen',
       ),
+      $library . '/owl.transitions.css' => array(
+        'type' => 'file',
+        'media' => 'screen',
+      ),
     ),
   );
 
