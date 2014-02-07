@@ -155,6 +155,8 @@ function owlcarousel_delete_instance_settings($id = NULL, $js) {
       $message = drupal_set_message($message, 'status');
 
       $commands = array();
+      $commands[] = ajax_command_remove($id);
+      $commands[] = ajax_command_remove('#owlcarousel-settings-form .vertical-tab-button.selected');
       $commands[] = ajax_command_prepend('#page', theme('status_messages', $message));
       $page = array('#type' => 'ajax', '#commands' => $commands);
       ajax_deliver($page);
