@@ -32,7 +32,7 @@ function theme_owlcarousel_list(&$vars) {
 function theme_owlcarousel_list_item(&$vars) {
   return '<div class="' . $vars['class'] . '">' . $vars['item'] . "</div>";
 }
- 
+
 /**
  * Template process carousel theme.
  */

@@ -27,6 +27,22 @@ function owlcarousel_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'owlcarousel.admin.inc',
   );
+  $items['admin/config/user-interface/owlcarousel/import'] = array(
+    'title' => 'Import Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('owlcarousel_variable_settings_import_form'),
+    'access arguments' => array('administer owlcarousel settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'owlcarousel.admin.inc',
+  );
+  $items['admin/config/user-interface/owlcarousel/%/export'] = array(
+    'title' => 'Export Settings',
+    'page callback' => 'owlcarousel_export_instance_settings',
+    'page arguments' => array(4),
+    'access arguments' => array('administer owlcarousel settings'),
+    'type' => MENU_CALLBACK,
+    'file' => 'owlcarousel.admin.inc',
+  );
   $items['admin/config/user-interface/owlcarousel/%/delete/%'] = array(
     'title' => 'Delete Settings',
     'page callback' => 'owlcarousel_delete_instance_settings',

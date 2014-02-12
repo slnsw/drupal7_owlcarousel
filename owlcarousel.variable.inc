@@ -32,7 +32,7 @@ function owlcarousel_variable_group_info() {
   $groups['owlcarousel'] = array(
     'title' => t('Owl Carousel'),
     'description' => t('Define instance settings for each owl carousel.'),
-    'access' => 'administer site configuration',
+    'access' => 'administer owlcarousel settings',
     'path' => array('admin/config/user-interface/owlcarousel'),
   );
 
