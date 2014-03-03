@@ -187,7 +187,7 @@ function _owlcarousel_return_carousel_instance_settings($instance) {
       'slideSpeed' => (int)$function('owlcarousel_slide_speed_' . $instance),
       'paginationSpeed' => (int)$function('owlcarousel_pagination_speed_' . $instance),
       'rewindSpeed' => (int)$function('owlcarousel_rewind_speed_' . $instance),
-      'autoPlay' => (int)$function('owlcarousel_auto_play_' . $instance),
+      'autoPlay' => $function('owlcarousel_auto_play_' . $instance) ? $function('owlcarousel_auto_play_' . $instance) : FALSE,
       'stopOnHover' => (boolean)$function('owlcarousel_stop_on_hover_' . $instance),
       'navigation' => (boolean)$function('owlcarousel_navigation_' . $instance),
       'navigationText' => $function('owlcarousel_navigation_text_' . $instance),
