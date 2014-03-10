@@ -193,7 +193,7 @@ function _owlcarousel_return_carousel_instance_settings($instance) {
       'navigation' => (boolean)$function('owlcarousel_navigation_' . $instance),
       'navigationText' => $function('owlcarousel_navigation_text_' . $instance),
       'rewindNav' => (boolean)$function('owlcarousel_rewind_nav_' . $instance),
-      'scrollPerPage' => (boolean)$function('owlcarousel_sroll_per_page_' . $instance),
+      'scrollPerPage' => (boolean)$function('owlcarousel_scroll_per_page_' . $instance),
       'pagination' => (boolean)$function('owlcarousel_pagination_' . $instance),
       'paginationNumbers' => (boolean)$function('owlcarousel_pagination_numbers_' . $instance),
       'responsive' => (boolean)$function('owlcarousel_responsive_' . $instance),
