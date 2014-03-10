@@ -154,12 +154,13 @@ function owlcarousel_initiate_instance($instance, $carousel) {
  * Return Owl Carousel settings array or default.
  */
 function _owlcarousel_return_carousel_instance_settings($instance) {
-  $function = !module_exists('variable') ? 'variable_get' : 'variable_get_value';
-
   if ($settings_cache = cache_get('owlcarousel_cache_' . $instance . '_settings')) {
     $settings = $settings_cache->data;
   }
   else {
+    // Depreciated, @todo remove for rc1, only use variable_get_value now.
+    $function = !module_exists('variable') ? 'variable_get' : 'variable_get_value';
+
     $settings = array(
       'items' => (int)$function('owlcarousel_items_' . $instance),
       'itemsDesktop' => array(

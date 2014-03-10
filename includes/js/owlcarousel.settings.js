@@ -9,7 +9,7 @@
       for (var carousel in settings.owlcarousel) {
         // lazyLoad support.
         if (settings.owlcarousel[carousel].lazyLoad) {
-          var images = $("#" + carousel + ' .field-content').children('img');
+          var images = $('#' + carousel).find('img');
 
           $.each(images, function(i, image) {
             $(image).attr('data-src', $(image).attr('src'));
