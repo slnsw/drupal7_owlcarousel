@@ -18,3 +18,10 @@ core = "7.x"
 project = "owl-carousel"
 datestamp = "1391782405"
 
+
+; Information added by Drupal.org packaging script on 2014-03-03
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "owl-carousel"
+datestamp = "1393856905"
+

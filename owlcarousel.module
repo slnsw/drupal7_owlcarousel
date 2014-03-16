@@ -56,6 +56,17 @@ function owlcarousel_menu() {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function owlcarousel_permission() {
+  return array(
+    'administer owlcarousel settings' => array(
+      'title' => t('Administer Owl Carousel settings'),
+    ),
+  );
+}
+
+/**
  * Implements hook_theme().
  */
 function owlcarousel_theme() {
@@ -78,17 +89,6 @@ function owlcarousel_theme() {
     ),
     'owlcarousel_admin_settings_form_fields' => array(
       'render element' => 'form',
-    ),
-  );
-}
-
-/**
- * Implements hook_permission().
- */
-function owlcarousel_permission() {
-  return array(
-    'administer owlcarousel settings' => array(
-      'title' => t('Administer Owl Carousel settings'),
     ),
   );
 }
@@ -153,12 +153,11 @@ function owlcarousel_initiate_instance($instance, $carousel) {
 /**
  * Return Owl Carousel settings array or default.
  */
-function _owlcarousel_return_carousel_instance_settings($instance) {
+function _owlcarousel_return_carousel_instance_settings($instance = 'default') {
   if ($settings_cache = cache_get('owlcarousel_cache_' . $instance . '_settings')) {
     $settings = $settings_cache->data;
   }
   else {
-    // Depreciated, @todo remove for rc1, only use variable_get_value now.
     $function = !module_exists('variable') ? 'variable_get' : 'variable_get_value';
 
     $settings = array(
@@ -280,6 +279,16 @@ function owlcarousel_instance_callback_list() {
 function _owlcarousel_return_instances() {
   $query = 'SELECT name FROM {variable} WHERE name LIKE :name';
   $results = db_query($query, array(':name' => db_like('owlcarousel_settings_') . '%'))->fetchAll();
+
+  return $results;
+}
+
+/**
+ * Helper function, return list of setting variables.
+ */
+function _owlcarousel_return_setting_vars() {
+  $query = 'SELECT name FROM {variable} WHERE name LIKE :name';
+  $results = db_query($query, array(':name' => db_like('owlcarousel_') . '%'))->fetchAll();
 
   return $results;
 }

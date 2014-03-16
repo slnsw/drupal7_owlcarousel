@@ -10,11 +10,15 @@
  */
 function template_process_owlcarousel_views(&$vars) {
   if (!empty($vars['view'])) {
-    $items = array();
-
+    // Load instance setting.
     $options = $vars['options'];
     $view = $vars['view'];
 
+    if (variable_get_value('owlcarousel_override_ajax_pagination_' . $options['instance'])) {
+      drupal_add_js(drupal_get_path('module', 'owlcarousel_views') . '/js/owlcarousel.views.js', array('scope' => 'footer', 'type' => 'file'));
+    }
+
+    $items = array();
     $row_plugin = $view->style_plugin->row_plugin;
     foreach ($vars['rows'] as $id => $row) {
       $view->row_index = $id;
@@ -26,10 +30,7 @@ function template_process_owlcarousel_views(&$vars) {
     // Add the slide items.
     $vars['items'] = $items;
 
-    // Add the attributes
     $options['attributes']['id'] = $vars['options']['id'];
-
-    // Reset the options to the processed values
     $vars['settings'] = $options;
   }
 

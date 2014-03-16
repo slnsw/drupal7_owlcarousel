@@ -4,12 +4,17 @@
  */
 
 (function($) {
+
   Drupal.behaviors.owlcarousel = {
     attach: function(context, settings) {
+
       for (var carousel in settings.owlcarousel) {
+        // Carousel instance.
+        var owl = $('#' + carousel);
+
         // lazyLoad support.
         if (settings.owlcarousel[carousel].lazyLoad) {
-          var images = $('#' + carousel).find('img');
+          var images = owl.children('img');
 
           $.each(images, function(i, image) {
             $(image).attr('data-src', $(image).attr('src'));
@@ -19,8 +24,9 @@
         }
 
         // Attach instance settings.
-        $("#" + carousel).owlCarousel(settings.owlcarousel[carousel]);
+        owl.owlCarousel(settings.owlcarousel[carousel]);
       }
     }
   };
+
 }(jQuery));
