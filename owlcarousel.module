@@ -129,6 +129,12 @@ function owlcarousel_library() {
 
 /**
  * Loads carousel instance settings.
+ *
+ * @param string $instance
+ *  Settings group machine name.
+ *
+ * @param string $carousel
+ *  Carousel HTML selector.
  */
 function owlcarousel_initiate_instance($instance, $carousel) {
   $version = variable_get('jquery_update_jquery_version', FALSE);
@@ -146,12 +152,25 @@ function owlcarousel_initiate_instance($instance, $carousel) {
   drupal_alter('owlcarousel_settings', $settings, $instance);
 
   // Include instance settings.
-  drupal_add_js(array('owlcarousel' => array($carousel => $settings)), 'setting');
+  drupal_add_js(array(
+    'owlcarousel' => array(
+      $carousel => array(
+        'settings' => $settings,
+        'views' => array(
+          'ajax_pagination' => variable_get_value('owlcarousel_override_ajax_pagination_' . $instance)
+        ),
+      )
+    ),
+  ), 
+  'setting');
   drupal_add_js(drupal_get_path('module', 'owlcarousel') . '/includes/js/owlcarousel.settings.js', array('scope' => 'footer', 'type' => 'file'));
 }
 
 /**
  * Return Owl Carousel settings array or default.
+ *
+ * @param string $instance
+ *  Carousel instance settings machine name.
  */
 function _owlcarousel_return_carousel_instance_settings($instance = 'default') {
   if ($settings_cache = cache_get('owlcarousel_cache_' . $instance . '_settings')) {

@@ -9,19 +9,4 @@ dependencies[] = owlcarousel
 files[] = owlcarousel_views.module
 files[] = owlcarousel_views.views.inc
 files[] = owlcarousel_views_plugin_style_owlcarousel.inc
-
-
-
-; Information added by Drupal.org packaging script on 2014-02-07
-version = "7.x-1.x-dev"
-core = "7.x"
-project = "owl-carousel"
-datestamp = "1391782405"
-
-
-; Information added by Drupal.org packaging script on 2014-03-03
-version = "7.x-1.x-dev"
-core = "7.x"
-project = "owl-carousel"
-datestamp = "1393856905"
-
+files[] = owlcarousel_views_plugin_pager_owlcarousel.inc

@@ -7,37 +7,49 @@
 
 (function($) {
 
-  /**
-   * Modified attach ajax behavior to a singe link.
-   */
-  Drupal.views.ajaxView.prototype.attachPagerLinkAjax = function(id, link) {
-    var $link = $(link);
-    var viewData = {};
-    var href = $link.attr('href');
+  if (typeof Drupal.views != 'undefined') {
+    /**
+     * Modified attach ajax behavior to a singe link.
+     */
+    Drupal.views.ajaxView.prototype.attachPagerLinkAjax = function(id, link) {
+      var $link = $(link);
 
-    $.extend(viewData, this.settings, Drupal.Views.parseQueryString(href), Drupal.Views.parseViewArgs(href, this.settings.view_base_path));
-    $.extend(viewData, Drupal.Views.parseViewArgs(href, this.settings.view_base_path));
+      // @todo, add check for remaining rows.
+      if ($link.hasClass('next')) {
+        var viewData = {};
+        var href = $link.attr('href');
 
-    this.element_settings.submit = viewData;
-    var owl = $(this.element_settings.selector).find('.owl-carousel');
-    var view = owl.parent().parent();
+        $.extend(viewData, this.settings, Drupal.Views.parseQueryString(href), Drupal.Views.parseViewArgs(href, this.settings.view_base_path));
+        $.extend(viewData, Drupal.Views.parseViewArgs(href, this.settings.view_base_path));
+        this.element_settings.submit = viewData;
 
-    if (owl.length) {
-      this.element_settings.url = Drupal.settings.basePath + 'owlcarousel/views/ajax';
-      this.element_settings.success = onSuccess;
+        var owl = $(this.element_settings.selector).find('.owl-carousel');
+        var view = owl.parent().parent();
 
-      // @todo, move ajax removal to onComplete?
-      // this.element_settings.complete = onComplete;
-    }
+        if (owl.length) {
+          this.element_settings.url = Drupal.settings.basePath + 'owlcarousel/views/ajax';
+          this.element_settings.success = onSuccess;
+        }
 
-    function onSuccess(content) {
-      owl.data('owlCarousel').addItem(content);
-      view.find('.ajax-progress-throbber').remove();
+        this.pagerAjax = new Drupal.ajax(false, $link, this.element_settings);
+      }
 
-      this.element_settings.submit.page++;
-    }
+      /**
+       * Append new slide.
+       */
+      function onSuccess(content) {
+        var page = owl.data('owlCarousel').currentItem;
 
-    this.pagerAjax = new Drupal.ajax(false, $link, this.element_settings);
-  };
+        owl.data('owlCarousel').addItem(content);
+        owl.data('owlCarousel').goTo(page);
+        view.find('.ajax-progress-throbber').remove();
+
+        if (isNaN(this.element_settings.submit.page)) {
+          this.element_settings.submit.page = 1;
+        }
+        this.element_settings.submit.page++;
+      }
+    };
+  }
 
 }(jQuery));
