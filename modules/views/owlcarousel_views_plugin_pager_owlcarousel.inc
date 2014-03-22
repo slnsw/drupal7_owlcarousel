@@ -104,10 +104,44 @@ class owlcarousel_views_plugin_pager_owlcarousel extends views_plugin_pager {
   function render($input) {
     return theme(views_theme_functions('owlcarousel_views_pager', $this->view, $this->display), array(
       'parameters' => $input, 
-      'element' => $this->options['id'],
+      'element' => $this->get_pager_id(),
       'options' => $this->options,
     ));
   }
+  
+ /**
+  * Set the current page.
+  *
+  * @param $number
+  * If provided, the page number will be set to this. If NOT provided,
+  * the page number will be set from the global page array.
+  */
+  function set_current_page($number = NULL) {
+    if (isset($number)) {
+      $this->current_page = $number;
+      return;
+    }
+    // If the current page number was not specified, extract it from the global
+    // page array.
+    global $pager_page_array;
+
+    if (empty($pager_page_array)) {
+      $pager_page_array = array();
+    }
+    // Fill in missing values in the global page array, in case the global page
+    // array hasn't been initialized before.
+    $page = isset($_GET['page']) ? explode(',', $_GET['page']) : array();
+    $pager_id = $this->get_pager_id();
+
+    for ($i = 0; $i <= $pager_id || $i < count($pager_page_array); $i++) {
+      $pager_page_array[$i] = empty($page[$i]) ? 0 : $page[$i];
+    }
+
+    $this->current_page = intval($pager_page_array[$pager_id]);
+    if ($this->current_page < 0) {
+      $this->current_page = 0;
+    }
+  } 
 
   /**
    * Total pager items.
@@ -125,17 +159,12 @@ class owlcarousel_views_plugin_pager_owlcarousel extends views_plugin_pager {
    * Update global paging info.
    */
   function update_page_info() {
-    if (!empty($this->options['total_pages'])) {
-      if (($this->options['total_pages'] * $this->options['items_per_page']) < $this->total_items) {
-        $this->total_items = $this->options['total_pages'] * $this->options['items_per_page'];
-      }
-    }
-
     $items_per_page = $this->get_items_per_page();
     if (!empty($items_per_page)) {
       global $pager_total, $pager_total_items, $pager_limits;
 
       // Set pager settings.
+      $pager_id = $this->get_pager_id();
       $pager_limits[$this->options['id']] = $this->options['items_per_page'];
       $pager_total_items[$this->options['id']] = $this->total_items;
       $pager_total[$this->options['id']] = $this->get_pager_total();
