@@ -228,7 +228,7 @@ function _owlcarousel_return_carousel_instance_settings($instance = 'default') {
       'mouseDrag' => (boolean)$function('owlcarousel_mouse_drag_' . $instance),
       'touchDrag' => (boolean)$function('owlcarousel_touch_drag_' . $instance),
       'addClassActive' => (boolean)$function('owlcarousel_add_class_active_' . $instance),
-      'transitionStyle' => (boolean)$function('owlcarousel_transition_style_' . $instance),
+      'transitionStyle' => $function('owlcarousel_transition_style_' . $instance),
     );
 
     // Update settings cache.
