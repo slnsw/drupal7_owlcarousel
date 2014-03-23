@@ -41,7 +41,7 @@
         var page = owl.data('owlCarousel').currentItem;
 
         owl.data('owlCarousel').addItem(content);
-        owl.data('owlCarousel').goTo(page);
+        owl.data('owlCarousel').jumpTo(page);
         view.find('.ajax-progress-throbber').remove();
 
         if (isNaN(this.element_settings.submit.page)) {
