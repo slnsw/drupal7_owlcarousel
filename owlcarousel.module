@@ -176,3 +176,27 @@ function _owlcarousel_return_carousel_instance_settings($instance = 'default') {
 
   return $settings;
 }
+
+/**
+ * Return array with key pair.
+ */
+function owlcarousel_instance_callback_list() {
+  $instances = _owlcarousel_return_instances();
+
+  // Format array as callback option list.
+  foreach ($instances as $instance) {
+    $content[$instance->name] = $instance->name;
+  }
+
+  return $content;
+}
+
+/**
+ * Helper function, return active instances by name.
+ */
+function _owlcarousel_return_instances() {
+  $query = 'SELECT name FROM {variable} WHERE name LIKE :name';
+  $results = db_query($query, array(':name' => db_like('owlcarousel_settings_') . '%'))->fetchAll();
+
+  return $results;
+}
