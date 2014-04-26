@@ -13,7 +13,8 @@ function template_process_owlcarousel_views(&$vars) {
     $options = $vars['options'];
     $view = $vars['view'];
 
-    if (variable_get_value('owlcarousel_override_ajax_pagination_' . $options['instance'])) {
+    $function = !module_exists('variable') ? 'variable_get' : 'variable_get_value';
+    if ($function('owlcarousel_override_ajax_pagination_' . $options['instance'])) {
       drupal_add_js(drupal_get_path('module', 'owlcarousel_views') . '/js/owlcarousel.views.js', array('scope' => 'footer', 'type' => 'file'));
       drupal_add_css(drupal_get_path('module', 'owlcarousel_views') . '/css/owlcarousel.views.css', array('scope' => 'header', 'type' => 'file'));
     }
