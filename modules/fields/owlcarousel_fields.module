@@ -12,7 +12,7 @@ function owlcarousel_fields_field_formatter_info() {
   return array(
     'owlcarousel_formatter' => array(
       'label' => t('Owl Carousel'),
-      'field types' => array('image', 'text', 'text_long', 'list_text'),
+      'field types' => array('image'),
       'settings'  => array(
         'settings_group' => 'default',
         'image_style' => 'large',
@@ -54,9 +54,9 @@ function owlcarousel_fields_field_formatter_settings_summary($field, $instance, 
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
 
-  $summary = t('@settings with image style @style applied to carousel instance.', array(
+  $summary = t('@settings with @style image style applied.', array(
     '@settings' => $settings['settings_group'],
-    '@style' => $settings['image_style'],
+    '@style' => !empty($settings['image_style']) ? $settings['image_style'] : 'no',
   ));
 
   return $summary;
@@ -79,10 +79,12 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
     ),
   );
 
+  // Defaults.
+  $function = 'image';
+
   // Format carousel items.
   foreach ($items as $item) {
     $vars = array(
-      'style_name' => $settings['image_style'],
       'path' => $item['uri'],
       'width' => $item['width'],
       'height' => $item['height'],
@@ -90,7 +92,12 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
       'title' => $item['title'],
     );
 
-    $items_group[]['row'] = theme('image_style', $vars);
+    if (!empty($settings['image_style'])) {
+      $function = 'image_style';
+      $vars['style_name'] = $settings['image_style'];
+    }
+
+    $items_group[]['row'] = theme($function, $vars);
   }
 
   $element = array(
