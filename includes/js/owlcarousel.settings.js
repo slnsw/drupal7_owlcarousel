@@ -29,19 +29,24 @@
         // Set an inline height if custom AJAX pagination is enabled;
         // otherwise replacement of carousel element causes scrolling effect.
         if (settings.owlcarousel[carousel].views.ajax_pagination) {
-          owl.parent().css('height', owl.height());
+          var owlnav = $('#' + carousel);
+          owlnav.parent().css('height', owlnav.height());
 
-          var view = owl.parent().parent();
-          var next = $(view).find('.pager-next a');
-          var prev = $(view).find('.pager-previous a');
+          var view = owlnav.parent().parent();
+          var next = $(view).find('.pager-next a', context);
+          var prev = $(view).find('.pager-previous a', context);
 
           // Attach Owl Carousel behaviors to pager elements.
-          $(next, context).click(function() {
-            owl.trigger('owl.next');
-          })
-          $(prev, context).click(function() {
-            owl.trigger('owl.prev');
-          })
+          $(next).once('ajax', function() {
+            $(next, context).click(function() {
+              owlnav.trigger('owl.next');
+            });
+          });
+          $(prev).once('ajax', function() {
+            $(prev, context).click(function() {
+              owlnav.trigger('owl.prev');
+            });
+          });
         }
       }
     }

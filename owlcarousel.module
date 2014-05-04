@@ -111,8 +111,8 @@ function owlcarousel_initiate_instance($instance, $carousel) {
  * @param string $instance
  *  Carousel instance settings machine name.
  */
-function _owlcarousel_return_carousel_instance_settings($instance = 'default') {
-  if ($settings_cache = cache_get('owlcarousel_cache_' . $instance . '_settings')) {
+function _owlcarousel_return_carousel_instance_settings($instance = 'owlcarousel_settings_default') {
+  if ($settings_cache = cache_get('owlcarousel_' . $instance)) {
     $settings = $settings_cache->data;
   }
   else {
@@ -171,7 +171,7 @@ function _owlcarousel_return_carousel_instance_settings($instance = 'default') {
     );
 
     // Update settings cache.
-    cache_set('owlcarousel_cache_' . $instance . '_settings', $settings, 'cache');
+    cache_set('owlcarousel_' . $instance, $settings, 'cache');
   }
 
   return $settings;
