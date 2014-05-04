@@ -206,6 +206,7 @@ function owlcarousel_variable_info($options) {
       'type' => 'array',
       'default' => array('prev', 'next'),
     ),
+    'localize' => TRUE,
     'group' => 'owlcarousel',
   );
   $variable['owlcarousel_rewind_nav_[instance_id]'] = array(
@@ -411,7 +412,7 @@ function owlcarousel_variable_info($options) {
   $variable['owlcarousel_override_ajax_pagination_[instance_id]'] = array(
     'type' => 'multiple',
     'title' => t('Override Views AJAX Pagination', array(), $options),
-    'description' => t('Override views default pagination; appends new slide (row) by AJAX. Please note, this option requires a view with AJAX enabled. (Experimental feature)', array(), $options),
+    'description' => t('Override views default pagination; appends new slide (row) by AJAX. Please note, this option requires a view with AJAX enabled & the carousel pager selected. (Experimental feature)', array(), $options),
     'repeat' => array(
       'type' => 'boolean',
       'default' => FALSE,
