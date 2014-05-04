@@ -12,10 +12,11 @@ function owlcarousel_fields_field_formatter_info() {
   return array(
     'owlcarousel_formatter' => array(
       'label' => t('Owl Carousel'),
-      'field types' => array('image'),
+      'field types' => array('image', 'text', 'text_long', 'text_with_summary'),
       'settings'  => array(
         'settings_group' => 'default',
         'image_style' => 'large',
+        'trim_length' => '',
       ),
     ),
   );
@@ -36,13 +37,26 @@ function owlcarousel_fields_field_formatter_settings_form($field, $instance, $vi
     '#default_value' => $settings['settings_group'],
     '#options' => owlcarousel_instance_callback_list(),
   );
-  $element['image_style'] = array(
-    '#type' => 'select',
-    '#title' => t('Image Style'),
-    '#description' => t('Apply image style.'),
-    '#default_value' => $settings['image_style'],
-    '#options' => image_style_options(),
-  );
+
+  if ($field['type'] == 'image') {
+    $element['image_style'] = array(
+      '#type' => 'select',
+      '#title' => t('Image Style'),
+      '#description' => t('Apply image style.'),
+      '#default_value' => $settings['image_style'],
+      '#options' => image_style_options(),
+    );
+  }
+
+  if (strpos($field['type'], 'text_') !== false) {
+    $element['trim_length'] = array(
+      '#title' => t('Trim length'),
+      '#type' => 'textfield',
+      '#size' => 10,
+      '#default_value' => $settings['trim_length'],
+      '#element_validate' => array('element_validate_integer_positive'),
+    );
+  }
 
   return $element;
 }
@@ -54,9 +68,14 @@ function owlcarousel_fields_field_formatter_settings_summary($field, $instance, 
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
 
-  $summary = t('@settings with @style image style applied.', array(
+  $message = '@settings applied to carousel instance.';
+  if ($field['type'] == 'image') {
+    $message = '@settings with image style @style applied to carousel instance.';
+  }
+
+  $summary = t($message, array(
     '@settings' => $settings['settings_group'],
-    '@style' => !empty($settings['image_style']) ? $settings['image_style'] : 'no',
+    '@style' => $settings['image_style'],
   ));
 
   return $summary;
@@ -74,30 +93,44 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
     'instance' => $settings['settings_group'],
     'attributes' => array(
       'id' => array(
-        'default' => 'owlcarousel_fields_' . $instance['id']
+        'default' => drupal_html_id('owlcarousel_fields_' . $instance['id'])
       ),
     ),
   );
 
-  // Defaults.
-  $function = 'image';
-
   // Format carousel items.
-  foreach ($items as $item) {
-    $vars = array(
-      'path' => $item['uri'],
-      'width' => $item['width'],
-      'height' => $item['height'],
-      'alt' => $item['alt'],
-      'title' => $item['title'],
-    );
+  switch ($field['type']) {
+    case 'text':
+    case 'text_long':
+    case 'text_with_summary':
+      foreach ($items as $item) {
+        if (!empty($item['summary'])) {
+          $output = _text_sanitize($instance, $langcode, $item, 'summary');
+        }
+        else {
+          $output = _text_sanitize($instance, $langcode, $item, 'value');
+          if (isset($display['settings']['trim_length'])) {
+            $output = text_summary($output, $instance['settings']['text_processing'] ? $item['format'] : NULL, $display['settings']['trim_length']);
+          }
+        }
 
-    if (!empty($settings['image_style'])) {
-      $function = 'image_style';
-      $vars['style_name'] = $settings['image_style'];
-    }
+        $items_group[]['row'] = $output;
+      }
+    break;
+    case 'image':
+      foreach ($items as $item) {
+        $vars = array(
+          'style_name' => $settings['image_style'],
+          'path' => $item['uri'],
+          'width' => $item['width'],
+          'height' => $item['height'],
+          'alt' => $item['alt'],
+          'title' => $item['title'],
+        );
 
-    $items_group[]['row'] = theme($function, $vars);
+        $items_group[]['row'] = theme('image_style', $vars);
+      }
+    break;
   }
 
   $element = array(
