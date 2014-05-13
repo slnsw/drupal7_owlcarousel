@@ -10,7 +10,7 @@
  */
 function owlcarousel_ui_menu() {
   $items['admin/config/user-interface/owlcarousel'] = array(
-    'title' => 'Owlcarousel',
+    'title' => 'Owl Carousel',
     'description' => 'Owlcarousel instance settings list.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('owlcarousel_settings_form'),
@@ -19,7 +19,7 @@ function owlcarousel_ui_menu() {
     'file' => 'owlcarousel_ui.admin.inc',
   );
   $items['admin/config/user-interface/owlcarousel/%'] = array(
-    'title' => 'Owlcarousel Settings',
+    'title' => 'Owl Carousel Instance Settings',
     'description' => 'List instance settings.',
     'page callback' => 'owlcarousel_instance_settings_form',
     'page arguments' => array(4),

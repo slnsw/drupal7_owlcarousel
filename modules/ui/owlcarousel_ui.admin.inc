@@ -6,7 +6,7 @@
  */
 
 /**
- * Owl Carousel settings overview.
+ * Owl Carousel instance settings overview.
  */
 function owlcarousel_settings_form() {
   drupal_add_library('system', 'drupal.ajax');
@@ -207,7 +207,7 @@ function owlcarousel_variable_settings_submit($form, $form_state) {
 function owlcarousel_export_instance_settings($instance) {
   require_once(DRUPAL_ROOT . '/includes/utility.inc');
   $variables = _owlcarousel_return_carousel_instance_settings($instance);
-  
+
   $form['container'] = array(
     '#type' => 'fieldset',
     '#title' => t('Settings Export'),
@@ -218,7 +218,7 @@ function owlcarousel_export_instance_settings($instance) {
     '#value' => drupal_json_encode($variables),
     '#description' => t('List of carousel instance setting variables.'),
   );
-  
+
   return $form;
 }
 
