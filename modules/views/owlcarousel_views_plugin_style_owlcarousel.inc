@@ -13,13 +13,10 @@ class owlcarousel_views_plugin_style_owlcarousel extends views_plugin_style {
   /**
    * Set default options.
    */
-  function options(&$options) {
+  function option_definition() {
     $options = parent::option_definition();
 
-    $options = array(
-      'instance' => array('default' => array('default')),
-    );
-
+    $options['instance'] = array('default' => 'default');
     return $options;
   }
 
