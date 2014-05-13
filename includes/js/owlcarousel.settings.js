@@ -14,7 +14,7 @@
 
         // lazyLoad support.
         if (settings.owlcarousel[carousel].settings.lazyLoad) {
-          var images = owl.children('img');
+          var images = owl.find('img');
 
           $.each(images, function(i, image) {
             $(image).attr('data-src', $(image).attr('src'));

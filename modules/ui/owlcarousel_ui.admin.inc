@@ -198,7 +198,7 @@ function owlcarousel_instance_settings_form($instance) {
 function owlcarousel_variable_settings_submit($form, $form_state) {
   // Clear settings cache.
   $instance = str_replace('-', '_', $form_state['build_info']['args'][1]);
-  cache_clear_all('owlcarousel_cache_' . $instance . '_settings', 'cache', TRUE); 
+  cache_clear_all('owlcarousel_' . $instance, 'cache', TRUE); 
 }
 
 /**
