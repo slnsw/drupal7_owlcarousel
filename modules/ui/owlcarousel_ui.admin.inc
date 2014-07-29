@@ -59,7 +59,7 @@ function owlcarousel_settings_form() {
     }
 
     // List per instance variables.
-   $build['groups'][$instance]['list'] = owlcarousel_variable_admin_group_list($instance_variables, $instance);
+    $build['groups'][$instance]['list'] = owlcarousel_variable_admin_group_list($instance_variables, $instance);
   }
 
   // Add & remove instance settings.
@@ -94,6 +94,15 @@ function owlcarousel_settings_form() {
   );
 
   return $build;
+}
+
+/**
+ * Instance form validation handler.
+ */
+function owlcarousel_settings_form_validate($form, $form_state) {
+  if (strlen($form_state['values']['name']) >= 65) {
+    form_set_error('name', t('The group name is too long =(.'));
+  }
 }
 
 /**
@@ -149,6 +158,15 @@ function owlcarousel_variable_settings_import_form($form, $form_state) {
   );
     
   return $form;
+}
+
+/**
+ * Instance form validation handler.
+ */
+function owlcarousel_variable_settings_import_form_validate($form, $form_state) {
+  if (strlen($form_state['values']['name']) >= 65) {
+    form_set_error('name', t('The group name is too long =(.'));
+  }
 }
 
 /**

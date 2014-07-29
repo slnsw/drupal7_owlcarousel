@@ -72,16 +72,25 @@ function owlcarousel_ui_permission() {
 function owlcarousel_ui_variable_settings_form_alter(&$form, $form_state, $form_id) {
   if (isset($form_state['build_info']['args'][0]) && $form_state['build_info']['args'][0] == 'owlcarousel') {
     $instance = $form_state['build_info']['args'][1];
-
-    // Include additional submit handler to update settings cache.
-    $form['#submit'][] = 'owlcarousel_variable_settings_submit';
-
-    // This needs a graceful solution... =/
-    $settings = owlcarousel_ui_build_instance_settings($instance, $form['#variable_edit_form']);
-    foreach ($form as $key => $component) {
-      if (strpos($key, '[instance_id]') !== FALSE) {
-        $form[$key] = $settings[$key];
+ 
+    $check = _owlcarousel_return_instances($instance);
+    if ($check) {
+      // Include additional submit handler to update settings cache.
+      $form['#submit'][] = 'owlcarousel_variable_settings_submit';
+ 
+      // This needs a graceful solution... =/
+      $settings = owlcarousel_ui_build_instance_settings($instance, $form['#variable_edit_form']);
+      foreach ($form as $key => $component) {
+        if (strpos($key, '[instance_id]') !== FALSE) {
+          $form[$key] = $settings[$key];
+        }
       }
+    }
+    else {
+      hide($form);
+
+      // Alert user; no group was found.
+      drupal_set_message(t('No settings group found with the name @name.', array('@name' => $instance)), 'warning');
     }
   }
 }

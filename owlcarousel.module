@@ -194,9 +194,15 @@ function owlcarousel_instance_callback_list() {
 /**
  * Helper function, return active instances by name.
  */
-function _owlcarousel_return_instances() {
+function _owlcarousel_return_instances($name = FALSE) {
   $query = 'SELECT name FROM {variable} WHERE name LIKE :name';
-  $results = db_query($query, array(':name' => db_like('owlcarousel_settings_') . '%'))->fetchAll();
+
+  if (!$name) {
+    $results = db_query($query, array(':name' => db_like('owlcarousel_settings_') . '%'))->fetchAll();
+  }
+  else {
+    $results = db_query($query, array(':name' => $name))->fetchField();
+  }
 
   return $results;
 }
