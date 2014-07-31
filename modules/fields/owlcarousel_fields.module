@@ -89,6 +89,7 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
   $settings = $display['settings'];
 
   // Format carousel settings.
+  $items_group = FALSE;
   $settings_group = array(
     'instance' => $settings['settings_group'],
     'attributes' => array(
@@ -113,14 +114,13 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
             $output = text_summary($output, $instance['settings']['text_processing'] ? $item['format'] : NULL, $display['settings']['trim_length']);
           }
         }
-
+ 
         $items_group[]['row'] = $output;
       }
     break;
     case 'image':
       foreach ($items as $item) {
         $vars = array(
-          'style_name' => $settings['image_style'],
           'path' => $item['uri'],
           'width' => $item['width'],
           'height' => $item['height'],
@@ -128,16 +128,25 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
           'title' => $item['title'],
         );
 
-        $items_group[]['row'] = theme('image_style', $vars);
+        if (empty($settings['image_style'])) {
+          $items_group[]['row'] = theme('image', $vars);
+        }
+        else {
+          $vars += array('style_name' => $settings['image_style']);
+          $items_group[]['row'] = theme('image_style', $vars);
+        }
       }
     break;
   }
 
-  $element = array(
-    '#theme' => 'owlcarousel',
-    '#items' => $items_group,
-    '#settings' => $settings_group,
-  );
+  // Only render if we have items.
+  if ($items_group) {
+    $element = array(
+      '#theme' => 'owlcarousel',
+      '#items' => $items_group,
+      '#settings' => $settings_group,
+    );
+  }
 
   return $element;
 }
