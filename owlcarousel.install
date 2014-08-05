@@ -14,6 +14,32 @@ function owlcarousel_install() {
 }
 
 /**
+ * Implements hook_requirements().
+ */
+function owlcarousel_requirements($phase) {
+  $t = get_t();
+
+  $requirements = array();
+  if ($phase == 'runtime') {
+    $library = libraries_get_path('owl-carousel');
+    $path = $library . '/owl.carousel.min.js';
+
+    $requirements['owlcarousel'] = array(
+      'title' => $t('Owl Carousel'),
+      'value' => $t('Owl Carousel library not found; the correct path should be @path.', array('@path' => $path)),
+      'severity' => REQUIREMENT_ERROR,
+    );
+
+    if (file_exists($path)) {
+      $requirements['owlcarousel']['value'] = $t('Enabled');
+      $requirements['owlcarousel']['severity'] = REQUIREMENT_OK;
+    }
+  }
+
+  return $requirements;
+}
+
+/**
  * Implements hook_uninstall().
  */
 function owlcarousel_uninstall() {
