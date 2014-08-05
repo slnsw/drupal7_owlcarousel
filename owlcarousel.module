@@ -16,11 +16,11 @@ function owlcarousel_theme() {
       'file' => 'theme/owlcarousel.theme.inc',
     ),
     'owlcarousel_list' => array(
-      'variables' => array('items' => array(), 'settings' => array()),
+      'variables' => array('items' => array()),
       'file' => 'theme/owlcarousel.theme.inc',
     ),
     'owlcarousel_list_item' => array(
-      'variables' => array('item' => array(), 'settings' => array()),
+      'variables' => array('item' => array(), 'class' => ''),
       'file' => 'theme/owlcarousel.theme.inc',
     ),
     'owlcarousel_admin_settings_form' => array(
