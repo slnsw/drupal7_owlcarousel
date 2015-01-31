@@ -86,23 +86,23 @@ function _owlcarousel_return_carousel_instance_settings($instance = 'owlcarousel
       'items' => (int)$function('owlcarousel_items_' . $instance),
       'itemsDesktop' => array(
         $function('owlcarousel_items_desktop_' . $instance . '_width'),
-        $function('owlcarousel_items_desktop_' . $instance . '_items'),
+        (int)$function('owlcarousel_items_desktop_' . $instance . '_items'),
       ),
       'itemsDesktopSmall' => array(
         $function('owlcarousel_items_desktop_small_' . $instance . '_width'),
-        $function('owlcarousel_items_desktop_small_' . $instance . '_items'),
+        (int)$function('owlcarousel_items_desktop_small_' . $instance . '_items'),
       ),
       'itemsTablet' => array(
         $function('owlcarousel_items_tablet_' . $instance . '_width'),
-        $function('owlcarousel_items_tablet_' . $instance . '_items'),
+        (int)$function('owlcarousel_items_tablet_' . $instance . '_items'),
       ),
       'itemsTabletSmall' => array(
         $function('owlcarousel_items_tablet_small_' . $instance . '_width'),
-        $function('owlcarousel_items_tablet_small_' . $instance . '_items'),
+        (int)$function('owlcarousel_items_tablet_small_' . $instance . '_items'),
       ),
       'itemsMobile' => array(
         $function('owlcarousel_items_mobile_' . $instance . '_width'),
-        $function('owlcarousel_items_mobile_' . $instance . '_items'),
+        (int)$function('owlcarousel_items_mobile_' . $instance . '_items'),
       ),
       'singleItem' => (boolean)$function('owlcarousel_single_item_' . $instance),
       'itemsScaleUp' => (boolean)$function('owlcarousel_items_scale_up_' . $instance),
