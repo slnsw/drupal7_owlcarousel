@@ -88,7 +88,7 @@ function owlcarousel_pre_render_cache($element) {
     'library' => array(
       array(
         'owlcarousel',
-        'owlcarousel'
+        'owl-carousel'
       )
     ),
   );

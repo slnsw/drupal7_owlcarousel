@@ -41,7 +41,7 @@ function owlcarousel_theme() {
 function owlcarousel_library() {
   $library = libraries_get_path('owl-carousel');
 
-  $libraries['owlcarousel'] = array(
+  $libraries['owl-carousel'] = array(
     'title' => 'Owl Carousel',
     'website' => 'http://owlgraphic.com/owlcarousel',
     'version' => array(),
