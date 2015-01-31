@@ -12,7 +12,7 @@ function owlcarousel_fields_field_formatter_info() {
   return array(
     'owlcarousel_formatter' => array(
       'label' => t('Owl Carousel'),
-      'field types' => array('image', 'text', 'text_long', 'text_with_summary'),
+      'field types' => array('image', 'text', 'text_long', 'text_with_summary', 'paragraphs', 'entityreference'),
       'settings'  => array(
         'settings_group' => 'default',
         'image_style' => 'large',
