@@ -19,6 +19,14 @@ function owlcarousel_fields_field_formatter_info() {
         'trim_length' => '',
       ),
     ),
+    'owlcarousel_fc_formatter' => array(
+      'label' => t('Owl Carousel'),
+      'field types' => array('field_collection'),
+      'settings'  => array(
+        'settings_group' => 'default',
+        'view_mode' => 'full',
+      ),
+    ),
   );
 }
 
@@ -58,6 +66,22 @@ function owlcarousel_fields_field_formatter_settings_form($field, $instance, $vi
     );
   }
 
+  if ($field['type'] == 'field_collection') {
+    $entity_type = entity_get_info('field_collection_item');
+    $options = array();
+    foreach ($entity_type['view modes'] as $mode => $info) {
+      $options[$mode] = $info['label'];
+    }
+
+    $element['view_mode'] = array(
+      '#type' => 'select',
+      '#title' => t('View mode'),
+      '#options' => $options,
+      '#default_value' => $settings['view_mode'],
+      '#description' => t('Select the view mode'),
+    );
+  }
+
   return $element;
 }
 
@@ -67,16 +91,25 @@ function owlcarousel_fields_field_formatter_settings_form($field, $instance, $vi
 function owlcarousel_fields_field_formatter_settings_summary($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
-
   $message = '@settings applied to carousel instance.';
+
   if ($field['type'] == 'image') {
     $message = '@settings with image style @style applied to carousel instance.';
   }
 
-  $summary = t($message, array(
-    '@settings' => $settings['settings_group'],
-    '@style' => $settings['image_style'],
-  ));
+  if ($field['type'] == 'field_collection') {
+    $message = '@settings applied to carousel instance on @view_mode view mode.';
+    $summary = t($message, array(
+      '@settings' => $settings['settings_group'],
+      '@view_mode' => $settings['view_mode'],
+    ));
+  }
+  else {
+    $summary = t($message, array(
+      '@settings' => $settings['settings_group'],
+      '@style' => $settings['image_style'],
+    ));
+  }
 
   return $summary;
 }
@@ -130,6 +163,15 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
         else {
           $vars += array('style_name' => $settings['image_style']);
           $items_group[]['row'] = theme('image_style', $vars);
+        }
+      }
+    break;
+    case 'field_collection':
+      $view_mode = !empty($settings['view_mode']) ? $settings['view_mode'] : 'full';
+      foreach ($items as $delta => $item) {
+        if ($field_collection = field_collection_field_get_entity($item)) {
+          $output = $field_collection->view($view_mode);
+          $items_group[$delta]['row'] = drupal_render($output);
         }
       }
     break;
