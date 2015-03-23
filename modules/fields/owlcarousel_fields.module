@@ -92,11 +92,7 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
   $items_group = FALSE;
   $settings_group = array(
     'instance' => $settings['settings_group'],
-    'attributes' => array(
-      'id' => array(
-        'default' => drupal_html_id('owlcarousel_fields_' . $instance['id'])
-      ),
-    ),
+    'id' => 'owlcarousel-fields-' . $instance['id'],
   );
 
   // Format carousel items.
@@ -114,7 +110,7 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
             $output = text_summary($output, $instance['settings']['text_processing'] ? $item['format'] : NULL, $display['settings']['trim_length']);
           }
         }
- 
+
         $items_group[]['row'] = $output;
       }
     break;

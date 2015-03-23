@@ -12,8 +12,7 @@
  */
 function template_process_owlcarousel(&$vars) {
   $instance_id = $vars['settings']['instance'];
-  $owlcarousel_id = $vars['settings']['attributes']['id']['default'];
-  $vars['settings']['attributes']['id'] = $owlcarousel_id;
+  $vars['settings']['attributes']['class'][] = $vars['settings']['id'];
 }
 
 /**
@@ -29,7 +28,7 @@ function theme_owlcarousel_wrapper($variables) {
  * Theme declaration for Owl Carousel.
  */
 function theme_owlcarousel($variables) {
-  $instance = $variables['settings']['attributes']['id'];
+  $instance = $variables['settings']['id'];
   $settings = $variables['settings'];
   $items = $variables['items'];
 
@@ -49,14 +48,14 @@ function theme_owlcarousel($variables) {
  */
 function owlcarousel_pre_render_cache($element) {
   $settings = $element['#output']['settings']['instance'];
-  $instance = $element['#output']['settings']['attributes']['id'];
+  $instance = $element['#output']['settings']['id'];
 
   $output = array(
     '#theme' => 'owlcarousel_list',
     '#items' => $element['#output']['items'],
     '#settings' => $element['#output']['settings']
   );
-  
+
   // Load carousel settings from the instance id.
   $instance_settings = _owlcarousel_return_carousel_instance_settings($settings);
 
@@ -79,9 +78,9 @@ function owlcarousel_pre_render_cache($element) {
             'settings' => $instance_settings,
             'views' => array(
               'ajax_pagination' => variable_get('owlcarousel_override_ajax_pagination_' . $settings)
-            )
-          )
-        )),
+            ),
+          ),
+        ),),
         'type' => 'setting'
       )
     ),
