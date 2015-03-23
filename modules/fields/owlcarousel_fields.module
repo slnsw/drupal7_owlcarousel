@@ -137,7 +137,7 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
 
   // Only render if we have items.
   if ($items_group) {
-    $element = array(
+    $element[] = array(
       '#theme' => 'owlcarousel',
       '#items' => $items_group,
       '#settings' => $settings_group,
