@@ -199,8 +199,8 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
       foreach ($items as $item) {
         $vars = array(
           'path' => $item['uri'],
-          'width' => $item['width'],
-          'height' => $item['height'],
+          'width' => isset($item['width']) ? $item['width'] : '',
+          'height' => isset($item['height']) ? $item['height'] : '',
           'alt' => $item['alt'],
           'title' => $item['title'],
         );
