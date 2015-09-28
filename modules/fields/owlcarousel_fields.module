@@ -14,7 +14,7 @@ function owlcarousel_fields_field_formatter_info() {
       'label' => t('Owl Carousel'),
       'field types' => array('image', 'text', 'text_long', 'text_with_summary'),
       'settings'  => array(
-        'settings_group' => 'default',
+        'settings_group' => 'owlcarousel_settings_default',
         'image_style' => 'large',
         'trim_length' => '',
       ),
@@ -23,7 +23,7 @@ function owlcarousel_fields_field_formatter_info() {
       'label' => t('Owl Carousel'),
       'field types' => array('field_collection'),
       'settings'  => array(
-        'settings_group' => 'default',
+        'settings_group' => 'owlcarousel_settings_default',
         'view_mode' => 'full',
       ),
     ),
@@ -31,7 +31,7 @@ function owlcarousel_fields_field_formatter_info() {
       'label' => t('Owl Carousel'),
       'field types' => array('entityreference'),
       'settings'  => array(
-        'settings_group' => 'default',
+        'settings_group' => 'owlcarousel_settings_default',
         'view_mode' => 'full',
       ),
     ),
@@ -39,7 +39,7 @@ function owlcarousel_fields_field_formatter_info() {
       'label' => t('Owl Carousel'),
       'field types' => array('paragraphs'),
       'settings'  => array(
-        'settings_group' => 'default',
+        'settings_group' => 'owlcarousel_settings_default',
         'view_mode' => 'full',
       ),
     ),
