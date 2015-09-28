@@ -101,7 +101,7 @@ function owlcarousel_settings_form() {
  */
 function owlcarousel_settings_form_validate($form, $form_state) {
   if (strlen($form_state['values']['name']) >= 65) {
-    form_set_error('name', t('The group name is too long =(.'));
+    form_set_error('name', t('The group name is too long.'));
   }
 }
 
@@ -215,8 +215,7 @@ function owlcarousel_instance_settings_form($instance) {
  */
 function owlcarousel_variable_settings_submit($form, $form_state) {
   // Clear settings cache.
-  $instance = str_replace('-', '_', $form_state['build_info']['args'][1]);
-  cache_clear_all('owlcarousel_' . $instance, 'cache', TRUE); 
+  cache_clear_all('*', 'cache', TRUE);
 }
 
 /**
