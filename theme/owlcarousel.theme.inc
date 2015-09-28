@@ -117,10 +117,12 @@ function theme_owlcarousel_list(&$vars) {
 
   if (!empty($items)) {
     foreach ($items as $i => $item) {
-      $output .= theme('owlcarousel_list_item', array(
-        'item' => $item['row'],
-        'class' => drupal_html_class('item-' . $i),
-      ));
+      if ($item['row']) {
+        $output .= theme('owlcarousel_list_item', array(
+          'item' => $item['row'],
+          'class' => drupal_html_class('item-' . $i),
+        ));
+      }
     }
   }
 
