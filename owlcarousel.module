@@ -145,14 +145,18 @@ function _owlcarousel_return_carousel_instance_settings($instance = 'owlcarousel
  * Return array with key pair.
  */
 function owlcarousel_instance_callback_list() {
-  $instances = _owlcarousel_return_instances();
+  $results = &drupal_static(__FUNCTION__);
 
-  // Format array as callback option list.
-  foreach ($instances as $instance) {
-    $content[$instance->name] = $instance->name;
+  if (!isset($results)) {
+    $instances = _owlcarousel_return_instances();
+
+    // Format array as callback option list.
+    foreach ($instances as $instance) {
+      $results[$instance->name] = $instance->name;
+    }
   }
 
-  return $content;
+  return $results;
 }
 
 /**
