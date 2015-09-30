@@ -207,13 +207,18 @@ function owlcarousel_variable_settings_import_form_submit($form, $form_state) {
  */
 function owlcarousel_instance_settings_form($instance) {
   module_load_include('form.inc', 'variable_realm');
-  return drupal_get_form('variable_module_form', 'owlcarousel', $instance);
+  $form = drupal_get_form('variable_module_form', 'owlcarousel', $instance);
+  $form['#submit'][] = 'owlcarousel_variable_settings_submit';
+
+  return $form;
 }
 
 /**
  * Additional variable settings form submit handler.
  */
-function owlcarousel_variable_settings_submit($form, $form_state) {
+function owlcarousel_variable_settings_submit($form, &$form_state) {
+  $form_state['redirect'] = 'admin/config/user-interface/owlcarousel';
+
   // Clear settings cache.
   cache_clear_all('*', 'cache', TRUE);
 }
@@ -280,7 +285,7 @@ function owlcarousel_delete_instance_settings($id = NULL, $js) {
       $message = drupal_set_message($message, 'status');
 
       $commands = array();
-      $commands[] = ajax_command_remove($id);
+      $commands[] = ajax_command_remove('#' . $id);
       $commands[] = ajax_command_remove('#owlcarousel-settings-form .vertical-tab-button.selected');
       $commands[] = ajax_command_prepend('#page', theme('status_messages', $message));
       $page = array('#type' => 'ajax', '#commands' => $commands);
