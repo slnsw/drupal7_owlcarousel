@@ -207,7 +207,7 @@ function owlcarousel_variable_settings_import_form_submit($form, $form_state) {
  */
 function owlcarousel_instance_settings_form($instance) {
   module_load_include('form.inc', 'variable_realm');
-  $form = drupal_get_form('variable_module_form', 'owlcarousel', $instance);
+  $form = drupal_get_form('variable_group_form', 'owlcarousel', $instance);
   $form['#submit'][] = 'owlcarousel_variable_settings_submit';
 
   return $form;
