@@ -1,0 +1,7 @@
+name = Owl Carousel Colorbox
+description = "Provides integration between Colorbox and Owl Carousel"
+core = 7.x
+package = Owl Carousel
+
+dependencies[] = colorbox
+dependencies[] = owlcarousel
