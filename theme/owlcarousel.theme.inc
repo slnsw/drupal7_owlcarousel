@@ -121,6 +121,7 @@ function theme_owlcarousel_list(&$vars) {
         $output .= theme('owlcarousel_list_item', array(
           'item' => $item['row'],
           'class' => drupal_html_class('item-' . $i),
+          'group' => $vars['settings']['instance']
         ));
       }
     }
@@ -133,5 +134,5 @@ function theme_owlcarousel_list(&$vars) {
  * Default theme implementation for carousel items
  */
 function theme_owlcarousel_list_item(&$vars) {
-  return '<div class="' . $vars['class'] . '">' . $vars['item'] . "</div>";
+  return '<div class="' . $vars['class'] . '">' . $vars['item'] . '</div>';
 }
