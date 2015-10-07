@@ -5,3 +5,5 @@ package = Owl Carousel
 
 dependencies[] = colorbox
 dependencies[] = owlcarousel
+
+

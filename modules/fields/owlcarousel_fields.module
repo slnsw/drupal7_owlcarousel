@@ -196,6 +196,11 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
       }
     break;
     case 'image':
+      $colorbox = FALSE;
+      if (module_exists('owlcarousel_colorbox')) {
+        $colorbox = _owlcarousel_colorbox_settings($settings['settings_group']);
+      }
+
       foreach ($items as $item) {
         $vars = array(
           'path' => $item['uri'],
@@ -205,12 +210,30 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
           'title' => $item['title'],
         );
 
-        if (empty($settings['image_style'])) {
-          $items_group[]['row'] = theme('image', $vars);
+        if ($colorbox && $colorbox['colorbox']) {
+          $vars += array('style_name' => $settings['image_style']);
+          if ($style_name = $colorbox['colorbox_imagestyle']) {
+            $path = image_style_url($style_name, $item['uri']);
+          }
+          else {
+            $path = file_create_url($item['uri']);
+          }
+
+          $items_group[]['row'] = theme('colorbox_imagefield', array(
+            'image' => $vars,
+            'path' => $path,
+            'title' => $item['title'],
+            'gid' => $settings['settings_group']
+          ));
         }
         else {
-          $vars += array('style_name' => $settings['image_style']);
-          $items_group[]['row'] = theme('image_style', $vars);
+          if (empty($settings['image_style'])) {
+            $items_group[]['row'] = theme('image', $vars);
+          }
+          else {
+            $vars += array('style_name' => $settings['image_style']);
+            $items_group[]['row'] = theme('image_style', $vars);
+          }
         }
       }
     break;
