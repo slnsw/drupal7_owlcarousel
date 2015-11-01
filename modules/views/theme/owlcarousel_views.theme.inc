@@ -23,18 +23,17 @@ function template_process_owlcarousel_views(&$vars) {
     $row_plugin = $view->style_plugin->row_plugin;
     foreach ($vars['rows'] as $id => $row) {
       $view->row_index = $id;
-      $item['row'] = $row_plugin->render($row);
 
-      $items[] = $item;
+      if ($item['row'] = $row_plugin->render($row)) {
+        $items[] = $item;
+      }
     }
 
     // Add the slide items.
-    $vars['items'] = $items;
     $options['id'] = $vars['options']['id'];
+    $vars['items'] = $items;
     $vars['settings'] = $options;
   }
-
-  return $vars;
 }
 
 /**

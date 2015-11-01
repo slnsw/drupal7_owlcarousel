@@ -24,7 +24,9 @@
         }
 
         // Attach instance settings.
-        owl.owlCarousel(settings.owlcarousel[carousel].settings);
+        if (!owl.hasClass('disabled')) {
+          owl.owlCarousel(settings.owlcarousel[carousel].settings);
+        }
 
         // Set an inline height if custom AJAX pagination is enabled;
         // otherwise replacement of carousel element causes scrolling effect.

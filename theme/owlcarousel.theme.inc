@@ -16,6 +16,15 @@ function template_process_owlcarousel(&$vars) {
 }
 
 /**
+ * Template preprocess carousel wrapper.
+ */
+function template_preprocess_owlcarousel_wrapper(&$variables) {
+  if (count($variables['output']['#items']) < 2) {
+    $variables['output']['#settings']['attributes']['class'][] = 'disabled';
+  }
+}
+
+/**
  * Theme declaration for Owl Carousel wrapper.
  */
 function theme_owlcarousel_wrapper($variables) {
