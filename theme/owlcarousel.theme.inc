@@ -118,9 +118,10 @@ function theme_owlcarousel_list(&$vars) {
   if (!empty($items)) {
     foreach ($items as $i => $item) {
       if ($item['row']) {
+        $striping = $i % 2 == 0 ? 'item-odd' : 'item-even';
         $output .= theme('owlcarousel_list_item', array(
           'item' => $item['row'],
-          'class' => drupal_html_class('item-' . $i),
+          'class' => drupal_html_class('item-' . $i). ' ' . drupal_html_class($striping),
           'group' => $vars['settings']['instance']
         ));
       }
@@ -129,6 +130,7 @@ function theme_owlcarousel_list(&$vars) {
 
   return $output;
 }
+
 
 /**
  * Default theme implementation for carousel items
