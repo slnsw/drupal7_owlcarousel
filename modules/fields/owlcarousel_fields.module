@@ -169,11 +169,15 @@ function owlcarousel_fields_field_formatter_view($entity_type, $entity, $field, 
   $element = array();
   $settings = $display['settings'];
 
+  // Generates a unique instance name for this carousel display.
+  list($entity_id, ,) = entity_extract_ids($entity_type, $entity);
+  $instance_id = 'owlcarousel-instance-' . implode('-', array($entity_type, $entity_id, 'fields', $instance['id']));
+
   // Format carousel settings.
   $items_group = FALSE;
   $settings_group = array(
     'instance' => $settings['settings_group'],
-    'id' => 'owlcarousel-fields-' . $instance['id'],
+    'id' => $instance_id
   );
 
   // Format carousel items.
