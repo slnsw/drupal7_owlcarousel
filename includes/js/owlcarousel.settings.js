@@ -23,7 +23,7 @@
      * @param carousel htmlSelector
      * @param settings object
      */
-    attachInit(carousel, settings) {
+    attachInit: function(carousel, settings) {
       var element = $('.' + carousel);
       this.attachOwlCarousel(element, settings[settings.instance].settings);
     },
