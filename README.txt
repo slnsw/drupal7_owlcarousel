@@ -43,7 +43,7 @@ INSTALLATION
  *  Install as you would normally install a contributed drupal module. See:
     https://drupal.org/documentation/install/modules-themes/modules-7
     for further information.
- *  Download the Owl Carousel library from http://owlgraphic.com/owlcarousel
+ *  Download the Owl Carousel library from https://owlcarousel2.github.io/OwlCarousel2/
  *  Place the library in the appropriate directory E.G.
     sites/all/libraries/owl-carousel
     sites/all/libraries/owl-carousel/owl.carousel.js
