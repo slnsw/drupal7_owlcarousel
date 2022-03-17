@@ -4,7 +4,7 @@
   "type": "drupal-module",
   "require": {
     "bower-asset/limit": "dev-master",
-    "npm-asset/owl-carousel": "1.3.3"
+    "npm-asset/owl-carousel": "dev-master"
   },
   "repositories": [
     {
