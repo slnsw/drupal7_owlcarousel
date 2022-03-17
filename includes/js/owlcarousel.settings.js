@@ -3,90 +3,81 @@
  * Initiate Owl Carousel.
  */
 
-(function($) {
+ (function($) {
 
-  Drupal.behaviors.owlcarousel = {
-    attach: function(context, settings) {
-      for (var carousel in settings.owlcarousel) {
-        settings.owlcarousel.instance = carousel;
-        this.attachInit(carousel, settings.owlcarousel);
+  Drupal.owlCarousel = Drupal.owlCarousel || {};
 
-        if (settings.owlcarousel[carousel].views.ajax_pagination) {
-          this.attachAjaxPagination(element, context);
-        }
-      }
-    },
-
-    /**
-     * Find and select carousel element.
-     *
-     * @param carousel htmlSelector
-     * @param settings object
-     */
-    attachInit: function(carousel, settings) {
-      var element = $('.' + carousel);
-      this.attachOwlCarousel(element, settings[settings.instance].settings);
-    },
-
-    /**
-     * Attaches each individual carousel instance
-     * to the provided HTML selector.
-     *
-     * @param element htmlElement
-     * @param settings object
-     */
-    attachOwlCarousel: function(element, settings) {
-      // Provide settings alter before init.
-      $(document).trigger('owlcarousel.alterSettings', settings);
+  Drupal.owlCarousel.init = function(context, settings){
+    for (var carousel in settings.owlcarousel) {
+      // Carousel instance.
+      var owl = $('.' + carousel);
 
       // lazyLoad support.
-      if (settings.lazyLoad) {
-        var images = element.find('img');
+      if (settings.owlcarousel[carousel].settings.lazyLoad) {
+        var images = owl.find('img');
 
         $.each(images, function(i, image) {
           $(image).attr('data-src', $(image).attr('src'));
         });
 
-        images.addClass('owl-lazy');
+        images.addClass('lazyOwl');
       }
 
-      if (element.hasClass('disabled') || settings.forceDisplay) {
-        element.show();
-      }
-      else {
-        // Attach instance settings & provide alter.
-        $(document).trigger('owlcarousel.alterInstance', [element.owlCarousel(settings)]);
-      }
-    },
+      var owlSettings = settings.owlcarousel[carousel].settings;
 
-    /**
-     * Attaches the AJAX pagination.
-     *
-     * @param element htmlElement
-     * @param context object
-     */
-    attachAjaxPagination: function(element, context) {
+      // Merge OwlCarousel accessibility settings with existing settings
+      owlSettings = owlAccess.events.mergeProps(owlSettings);
+
+      // Attach instance settings.
+      if (!owl.hasClass('disabled')) {
+        owl.owlCarousel(owlSettings);
+      }
+
       // Set an inline height if custom AJAX pagination is enabled;
       // otherwise replacement of carousel element causes scrolling effect.
-      element.parent().css('height', element.height());
+      if (settings.owlcarousel[carousel].views.ajax_pagination) {
+        var owlnav = $('.' + carousel);
+        owlnav.parent().css('height', owlnav.height());
 
-      var view = element.parent().parent();
-      var next = $(view).find('.pager-next a', context);
-      var prev = $(view).find('.pager-previous a', context);
+        var view = owlnav.parent().parent();
+        var next = $(view).find('.pager-next a', context);
+        var prev = $(view).find('.pager-previous a', context);
 
-      // Attach Owl Carousel behaviors to pager elements.
-      $(next, context).once('ajax', function() {
-        $(next).click(function() {
-          owlnav.trigger('owl.next');
+        // Attach Owl Carousel behaviors to pager elements.
+        $(next).once('ajax', function() {
+          $(next, context).click(function() {
+            owlnav.trigger('owl.next');
+          });
         });
-      });
-      $(prev, context).once('ajax', function() {
-        $(prev).click(function() {
-          owlnav.trigger('owl.prev');
+        $(prev).once('ajax', function() {
+          $(prev, context).click(function() {
+            owlnav.trigger('owl.prev');
+          });
         });
-      });
+      }
     }
+  };
 
+  Drupal.behaviors.owlcarousel = {
+    attach: function(context, settings) {
+      var init = true;
+
+      if (!!settings.owlcarousel_a11y) {
+        if (!!settings.owlcarousel_a11y.csscheck) {
+          var testElem = $('<div>', {
+            'class': 'owlcarousel-a11y-csscheck'
+          });
+          $('body').append(testElem);
+          var bgColor = $('.owlcarousel-a11y-csscheck').css('backgroundColor');
+          init = (!!bgColor && bgColor != 'transparent');
+          testElem.remove();
+        }
+      }
+
+      if (init) {
+        Drupal.owlCarousel.init(context, settings);
+      }
+    }
   };
 
 }(jQuery));

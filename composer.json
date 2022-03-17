@@ -1,0 +1,15 @@
+{
+  "name": "drupal/owlcarousel",
+  "description": "Owl Carousel module.",
+  "type": "drupal-module",
+  "require": {
+    "bower-asset/limit": "dev-master",
+    "npm-asset/owl-carousel": "^1.3"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
+}

@@ -11,6 +11,7 @@
 function owlcarousel_install() {
   // Add default optionset.
   variable_set('owlcarousel_settings_default', 'owlcarousel_default');
+  variable_set('owlcarousela11y_csscheck', 1);
 }
 
 /**
@@ -21,8 +22,10 @@ function owlcarousel_requirements($phase) {
 
   $requirements = array();
   if ($phase == 'runtime') {
-    $library = libraries_get_path('owl-carousel');
-    $path = $library . '/owl.carousel.min.js';
+    $owl_carousel_pkg = owlcarousel_composer_package_path('npm-asset/owlcarousel');
+    $limit_js_pkg = owlcarousel_composer_package_path('bower-asset/limit');
+
+    $path = $owl_carousel_pkg . '/owl-carousel/owl.carousel.min.js';
 
     $requirements['owlcarousel'] = array(
       'title' => $t('Owl Carousel'),
@@ -34,9 +37,29 @@ function owlcarousel_requirements($phase) {
       $requirements['owlcarousel']['value'] = $t('Enabled');
       $requirements['owlcarousel']['severity'] = REQUIREMENT_OK;
     }
+
+    $path = $limit_js_pkg . '/limit.js';
+
+    $requirements['limit-js'] = array(
+      'title' => $t('limit.js'),
+      'value' => $t('limit.js library not found; the correct path should be @path.', array('@path' => $path)),
+      'severity' => REQUIREMENT_ERROR,
+    );
+
+    if (file_exists($path)) {
+      $requirements['limit-js']['value'] = $t('Enabled');
+      $requirements['limit-js']['severity'] = REQUIREMENT_OK;
+    }
   }
 
   return $requirements;
+}
+
+/**
+ * Enable accessibility check.
+ */
+function owlcarousel_update_7001() {
+  variable_set('owlcarousela11y_csscheck', 1);
 }
 
 /**
@@ -51,4 +74,6 @@ function owlcarousel_uninstall() {
     // Clean up stored variables.
     variable_del($result->name);
   }
+
+  variable_del('owlcarousela11y_csscheck');
 }

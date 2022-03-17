@@ -5,6 +5,8 @@
  * owlcarousel.module
  */
 
+use Composer\InstalledVersions;
+
 /**
  * Implements hook_theme().
  */
@@ -36,34 +38,59 @@ function owlcarousel_theme() {
 }
 
 /**
+ * Get the install path for a Composer package.
+ */
+function owlcarousel_composer_package_path(string $package): string {
+  $versions = new InstalledVersions();
+  return $v->getInstallPath($package);
+}
+
+/**
  * Implements hook_library().
  */
 function owlcarousel_library() {
-  $library = libraries_get_path('owl-carousel');
+  $owl_carousel_pkg = owlcarousel_composer_package_path('npm-asset/owlcarousel');
+  $limit_js_pkg = owlcarousel_composer_package_path('bower-asset/limit');
+  $owl_carousel_module = drupal_get_path('module', 'owlcarousel');
 
   $libraries['owl-carousel'] = array(
     'title' => 'Owl Carousel',
     'website' => 'http://owlgraphic.com/owlcarousel',
     'version' => array(),
     'js' => array(
-      $library . '/owl.carousel.min.js' => array(
+      $owl_carousel_pkg . '/owl-carousel/owl.carousel.min.js' => array(
         'scope' => 'footer',
       ),
     ),
     'css' => array(
-      $library . '/owl.carousel.css' => array(
+      $owl_carousel_module . '/includes/css/a11y.css' => array(
         'type' => 'file',
         'media' => 'screen',
       ),
-      $library . '/owl.theme.css' => array(
+      $owl_carousel_pkg . '/owl-carousel/owl.carousel.css' => array(
         'type' => 'file',
         'media' => 'screen',
       ),
-      $library . '/owl.transitions.css' => array(
+      $owl_carousel_pkg . '/owl-carousel/owl.theme.css' => array(
+        'type' => 'file',
+        'media' => 'screen',
+      ),
+      $owl_carousel_pkg . '/owl-carousel/owl.transitions.css' => array(
         'type' => 'file',
         'media' => 'screen',
       ),
     ),
+  );
+
+  $libraries['limit-js'] = array(
+    'title' => 'limit.js',
+    'website' => 'https://github.com/m-gagne/limit.js',
+    'version' => '0.1.0',
+    'js' => array(
+      $limit_js_pkg . '/limit.js' => array(
+        'scope' => 'footer'
+      )
+    )
   );
 
   return $libraries;

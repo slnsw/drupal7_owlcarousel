@@ -1,0 +1,9 @@
+.owlcarousel-a11y-csscheck {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #f00;
+}
