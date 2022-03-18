@@ -42,7 +42,7 @@ function owlcarousel_theme() {
  */
 function owlcarousel_composer_package_path(string $package): string {
   $versions = new InstalledVersions();
-  return $v->getInstallPath($package);
+  return $versions->getInstallPath($package);
 }
 
 /**
