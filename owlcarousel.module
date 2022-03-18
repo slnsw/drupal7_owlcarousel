@@ -49,7 +49,7 @@ function owlcarousel_composer_package_path(string $package): string {
  * Implements hook_library().
  */
 function owlcarousel_library() {
-  $owl_carousel_pkg = owlcarousel_composer_package_path('npm-asset/owlcarousel');
+  $owl_carousel_pkg = owlcarousel_composer_package_path('npm-asset/owl-carousel');
   $limit_js_pkg = owlcarousel_composer_package_path('bower-asset/limit');
   $owl_carousel_module = drupal_get_path('module', 'owlcarousel');
 
