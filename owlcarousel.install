@@ -22,7 +22,7 @@ function owlcarousel_requirements($phase) {
 
   $requirements = array();
   if ($phase == 'runtime') {
-    $owl_carousel_pkg = owlcarousel_composer_package_path('npm-asset/owlcarousel');
+    $owl_carousel_pkg = owlcarousel_composer_package_path('npm-asset/owl-carousel');
     $limit_js_pkg = owlcarousel_composer_package_path('bower-asset/limit');
 
     $path = $owl_carousel_pkg . '/owl-carousel/owl.carousel.min.js';
