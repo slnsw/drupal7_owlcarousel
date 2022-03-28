@@ -76,48 +76,38 @@ function owlcarousel_pre_render_cache($element) {
 
   // Provide alter before carousel is rendered.
   drupal_alter('owlcarousel_pre_render', $element);
-
   $element['#children'] = drupal_render($element['#markup']);
-  $element['#attached'] = array(
-    'js' => array(
-      array(
-        'data' => drupal_get_path('module', 'owlcarousel') . '/includes/js/owlcarousel.accessibility.js',
-        'type' => 'file',
-        'scope' => 'footer'
-      ),
-      array(
-        'data' => drupal_get_path('module', 'owlcarousel') . '/includes/js/owlcarousel.settings.js',
-        'type' => 'file',
-        'scope' => 'footer'
-      ),
-      array(
-        'data' => array(
-          'owlcarousel' => array(
-            $instance => array(
-              'settings' => $instance_settings,
-              'views' => array(
-                'ajax_pagination' => variable_get('owlcarousel_override_ajax_pagination_' . $settings)
-              ),
-            ),
-          ),
-          'owlcarousel_a11y' => array(
-            'csscheck' => variable_get('owlcarousela11y_csscheck', 0),
+
+  // Append required libs one by one.
+  $owl_path = drupal_get_path('module', 'owlcarousel');
+  $element['#attached']['js'][] = [
+    'data' => $owl_path . '/includes/js/owlcarousel.accessibility.js',
+    'type' => 'file',
+    'scope' => 'footer',
+  ];
+  $element['#attached']['js'][] = [
+    'data' => $owl_path . '/includes/js/owlcarousel.settings.js',
+    'type' => 'file',
+    'scope' => 'footer',
+  ];
+  $element['#attached']['js'][] = [
+    'data' => array(
+      'owlcarousel' => array(
+        $instance => array(
+          'settings' => $instance_settings,
+          'views' => array(
+            'ajax_pagination' => variable_get('owlcarousel_override_ajax_pagination_' . $settings)
           ),
         ),
-        'type' => 'setting'
-      )
-    ),
-    'library' => array(
-      array(
-        'owlcarousel',
-        'limit-js'
       ),
-      array(
-        'owlcarousel',
-        'owl-carousel'
-      )
+      'owlcarousel_a11y' => array(
+        'csscheck' => variable_get('owlcarousela11y_csscheck', 0),
+      ),
     ),
-  );
+    'type' => 'setting',
+  ];
+  $element['#attached']['library'][] = ['owlcarousel', 'limit-js'];
+  $element['#attached']['library'][] = ['owlcarousel', 'owl-carousel'];
 
   return $element;
 }

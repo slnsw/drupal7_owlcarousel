@@ -42,7 +42,7 @@ function owlcarousel_theme() {
  */
 function owlcarousel_composer_package_path(string $package): string {
   $versions = new InstalledVersions();
-  return $versions->getInstallPath($package);
+  return str_replace(DRUPAL_ROOT . '/', '', drupal_realpath($versions->getInstallPath($package)));
 }
 
 /**
