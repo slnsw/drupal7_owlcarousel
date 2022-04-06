@@ -161,6 +161,14 @@ function _owlcarousel_return_carousel_instance_settings($instance = 'owlcarousel
       'transitionStyle' => $function('owlcarousel_transition_style_' . $instance) ? $function('owlcarousel_transition_style_' . $instance) : FALSE,
     );
 
+    // Allow other modules that define Owl Carousel settings to export them.
+    // Use function named modulename_owlcarousel_instance_settings_alter.
+    $context = array(
+      'instance' => $instance,
+      'function' => $function,
+    );
+    drupal_alter('owlcarousel_instance_settings', $settings, $context);
+
     // Update settings cache.
     cache_set('owlcarousel_' . $instance, $settings, 'cache');
   }
